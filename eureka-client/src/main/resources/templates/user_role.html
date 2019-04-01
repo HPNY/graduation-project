@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>角色管理</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        body {
+            padding-top: 50px;
+        }
+
+        .starter-template {
+            padding: 40px 15px;
+            text-align: left;
+            margin: 150px auto 0px auto;
+            display: table;
+        }
+    </style>
+</head>
+
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">演示</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a th:href="@{/}"><span class="glyphicon glyphicon-home"></span> 首页</a></li>
+                <li><a th:href="@{/user/user_list}"><span class="glyphicon glyphicon-user"></span> 用户管理</a></li>
+                <li><a th:href="@{/role/role_list}"><span class="glyphicon glyphicon-tag"></span> 角色管理</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" class="btn btn-link" style="padding-top: 14px" value="注销"/>
+                </form>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        个人中心 <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a th:href="@{/message}"><span class="glyphicon glyphicon-file"></span> 个人信息</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-cog"></span> 设置</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
+<div class="container">
+    <form name="form" action="/user/user" method="POST">
+        <div class="starter-template">
+            <input type="hidden" th:value="${id}" id="idNo" name="idNo">
+            <label>选择角色</label>
+            <div class="checkbox">
+                <label><input type="checkbox" value="1" name="role" id="ROLE_administrator">超级管理员</label>
+            </div>
+            <div class="checkbox">
+                <label><input type="checkbox" value="2" name="role" id="ROLE_admin">管理员</label>
+            </div>
+            <div class="checkbox">
+                <label><input type="checkbox" value="3" name="role" id="ROLE_normal">普通用户</label>
+            </div>
+            <div class="checkbox">
+                <label><input type="checkbox" value="4" name="role" id="ROLE_limit">限制用户</label>
+            </div>
+        </div>
+        <div style="margin: 0 auto;display: table;">
+            <button type="submit" class="btn btn-default btn-sm" style="margin-top:10px">提交</button>
+        </div>
+    </form>
+</div>
+</body>
+<script>
+    $("#ROLE_limit").click(function () {
+        $("#ROLE_administrator").prop("checked", false);
+        $("#ROLE_admin").prop("checked", false);
+        $("#ROLE_normal").prop("checked", false);
+    })
+    $("#ROLE_administrator").click(function () {
+        $("#ROLE_limit").prop("checked", false);
+    })
+    $("#ROLE_admin").click(function () {
+        $("#ROLE_limit").prop("checked", false);
+    })
+    $("#ROLE_normal").click(function () {
+        $("#ROLE_limit").prop("checked", false);
+    })
+
+    $.ajax({
+        url: '/user/user_role',
+        type: 'POST',
+        data: {id: $("#idNo").val()},
+        success: function (result) {
+            for (var i = 0; i < result.length; i++) {
+                var checkboxId = '#' + result[i].authority;
+                $(checkboxId).prop("checked", true);
+            }
+        }
+    })
+</script>
+</html>

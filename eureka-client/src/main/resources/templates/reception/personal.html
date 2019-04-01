@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>Bootstrap 实例 - 标题</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background-color: rgb(245, 246, 247);
+            padding-top: 50px;
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .detail {
+            list-style: none;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .model_detail {
+            list-style: none;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body onload="init()">
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">演示</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/reception/index"><span class="glyphicon glyphicon-home"></span> 首页</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <form action="/reception/logout" method="post">
+                    <input type="submit" class="btn btn-link" style="padding-top: 14px" value="注销"/>
+                </form>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <form action="/reception/personal" method="post">
+                    <input type="submit" class="btn btn-link" style="padding-top: 14px" value="个人信息"/>
+                </form>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container" style="background-color: rgb(255, 255, 255)">
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <div class="page-header" style="margin-left:10px">
+                <a href="/reception/article_add" style="float:right">添加新文章</a>
+                <h3>个人资料</h3>
+            </div>
+            <div>
+                <div class="col-md-3">
+                    <img src="/微信图片_20190318143802.jpg" height="250" width="250" class="img-circle" alt="这只是个头像">
+                    <br>
+                    <br>
+                    <!--<a href="#" style="text-align: center;display: block;">修改头像</a>-->
+                    <br>
+                    <br>
+                </div>
+                <div class="col-md-9">
+
+                    <div style="margin-top: 10px;margin-bottom: 20px;">
+                        ID：<span id="userId" th:text="${user.getId()}"></span>
+                        <a style="float:right" data-toggle="modal" data-target="#myModal">修改资料</a>
+                    </div>
+
+                    <ul style="padding-left:0;">
+                        <li class="detail" id="now_nickname">昵称：<span th:text="${user.getNickname()}"></span></li>
+                        <li class="detail" id="now_actual_name">实名：<span th:text="${user.getActualName()}"></span></li>
+                        <li class="detail" id="now_sex">性别：<span th:text="${user.getSex()}"></span></li>
+                        <li class="detail" id="now_birthday">生日：<span th:text="${user.getBirthday()}"></span></li>
+                        <li class="detail" id="now_introduction">简介：<span th:text="${user.getIntroduction()}"></span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    修改个人资料
+                </h4>
+            </div>
+            <div class="modal-body">
+                <ul style="padding-left:0;">
+                    <li class="model_detail">
+                        <div class="form-group">
+                            <label for="nickname" class="control-label" style="font-weight: normal">昵称：</label>
+                            <input type="text" class="form-control" id="nickname">
+                        </div>
+                    </li>
+                    <li class="model_detail">
+                        <div class="form-group">
+                            <label for="actual_name" class="control-label" style="font-weight: normal">实名：</label>
+                            <input type="text" class="form-control" id="actual_name">
+                        </div>
+                    </li>
+                    <li class="model_detail">性别：
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="1">男
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="sex" value="0">女
+                        </label>
+                    </li>
+                    <li class="model_detail">生日：
+                        <select id="year" class="selectpicker" onChange="swap_day()"></select>年
+                        <select id="month" class="selectpicker" onChange="swap_day()"></select>月
+                        <select id="day" class="selectpicker"></select>日
+                    </li>
+                    <li class="model_detail">
+                        <div class="form-group">
+                            <label for="introduction" style="font-weight: normal">简介：</label>
+                            <textarea class="form-control" rows="5" id="introduction"></textarea>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <button type="button" class="btn btn-primary" id="submit">
+                    提交更改
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+</body>
+<script>
+    var month_big = new Array("1", "3", "5", "7", "8", "10", "12"); //包含所有大月的数组
+    var month_small = new Array("4", "6", "9", "11"); //包含所有小月的数组
+
+    //页面加载时调用的初始化select控件的option的函数
+    function init() {
+        var select_year = document.getElementById("year"); //获取id为"year"的下拉列表框
+        var select_month = document.getElementById("month"); //获取id为"month"的下拉列表框
+        var select_day = document.getElementById("day"); //获取id为"day"的下拉列表框
+
+        //将年份选项初始化，从1980到2000
+        for (var i = 1960; i <= 2018; i++) {
+            select_year_option = new Option(i, i);
+            select_year.options.add(select_year_option);
+        }
+
+        //将月份选项初始化，从1到12
+        for (var i = 1; i <= 12; i++) {
+            select_month_option = new Option(i, i);
+            select_month.options.add(select_month_option);
+        }
+
+        //调用swap_day函数初始化日期
+        swap_day();
+    }
+
+    //判断数组array中是否包含元素obj的函数，包含则返回true，不包含则返回false
+    function array_contain(array, obj) {
+        for (var i = 0; i < array.length; i++) {
+            if (array[i] === obj) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //根据年份和月份调整日期的函数
+    function swap_day() {
+        var select_year = document.getElementById("year"); //获取id为"year"的下拉列表框
+        var select_month = document.getElementById("month"); //获取id为"month"的下拉列表框
+        var select_day = document.getElementById("day"); //获取id为"day"的下拉列表框
+
+        select_day.options.length = 0; //在调整前先清空日期选项里面的原有选项
+        var month = select_month.options[select_month.selectedIndex].value; //获取被选中的月份month
+
+        //如果month被包含在month_big数组中，即被选中月份是大月，则将日期选项初始化为31天
+        if (array_contain(month_big, month)) {
+            for (var i = 1; i <= 31; i++) {
+                select_day_option = new Option(i, i);
+                select_day.options.add(select_day_option);
+            }
+        }
+
+        //如果month被包含在month_small数组中，即被选中月份是小月，则将日期选项初始化为30天
+        else if (array_contain(month_small, month)) {
+            for (var i = 1; i <= 30; i++) {
+                select_day_option = new Option(i, i);
+                select_day.options.add(select_day_option);
+            }
+        }
+
+        //如果month为2，即被选中的月份是2月，则调用initFeb()函数来初始化日期选项
+        else {
+            initFeb();
+        }
+    }
+
+    //判断年份year是否为闰年，是闰年则返回true，否则返回false
+    function isLeapYear(year) {
+        var a = year % 4;
+        var b = year % 100;
+        var c = year % 400;
+        if (((a == 0) && (b != 0)) || (c == 0)) {
+            return true;
+        }
+        return false;
+    }
+
+    //根据年份是否闰年来初始化二月的日期选项
+    function initFeb() {
+        var select_year = document.getElementById("year"); //获取id为"year"的下拉列表框
+        var select_day = document.getElementById("day"); //获取id为"day"的下拉列表框
+        var year = parseInt(select_year.options[select_year.selectedIndex].value); //获取被选中的年份并转换成Int
+
+        //如果是闰年，则将日期选项初始化为29天
+        if (isLeapYear(year)) {
+            for (var i = 1; i <= 29; i++) {
+                select_day_option = new Option(i, i);
+                select_day.options.add(select_day_option);
+            }
+        }
+
+        //如果不是闰年，则将日期选项初始化为28天
+        else {
+            for (var i = 1; i <= 28; i++) {
+                select_day_option = new Option(i, i);
+                select_day.options.add(select_day_option);
+            }
+        }
+    }
+
+    $("#submit").click(function () {
+        $.ajax({
+            url: '/reception/changeInformation',
+            type: 'POST',
+            data: {
+                id: $("#userId").text(),
+                nickname: $("#nickname").val(),
+                actualName: $("#actual_name").val(),
+                sex: $("input:radio:checked").val(),
+                year: $("#year").val(),
+                month: $("#month").val(),
+                day: $("#day").val(),
+                introduction: $("#introduction").val()
+            },
+            success: function (result) {
+                if (result == 'success') {
+                    window.location.href = "/reception/personal";
+                }
+            }
+        })
+    })
+
+
+</script>
+
+</html>

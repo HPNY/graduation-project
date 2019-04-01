@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>更新用户</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        body {
+            padding-top: 50px;
+        }
+
+        .starter-template {
+            padding: 40px 15px;
+            text-align: center;
+        }
+    </style>
+    <script>
+        function checkNull() {
+            /*判断是否有空内容*/
+            for (i = 0; i < form.length; i++) {
+                if (form.elements[i].value == "") {
+                    alert(form.elements[i].title + "不能为空!");
+                    form.elements[i].focus();
+                    return false;
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">演示</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a th:href="@{/index}"><span class="glyphicon glyphicon-home"></span> 首页</a></li>
+                <li class="active"><a th:href="@{/user/user_list}"><span class="glyphicon glyphicon-user"></span> 用户管理</a></li>
+                <li><a th:href="@{/role/role_list}"><span class="glyphicon glyphicon-tag"></span> 角色管理</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" class="btn btn-link" style="padding-top: 14px" value="注销"/>
+                </form>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        个人中心 <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a th:href="@{/message}"><span class="glyphicon glyphicon-file"></span> 个人信息</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-cog"></span> 设置</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
+<div class="container">
+    <div class="starter-template">
+        <form name="form" th:action="@{/user/user_update}" method="post">
+            <input type="hidden" name="id" th:value="${user.getId()}">
+            <div class="form-group">
+                <label for="username">帐号</label>
+                <input type="text" class="form-control" name="username" th:value="${user.getUsername()}" />
+            </div>
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input type="password" class="form-control" name="password" th:value="${user.getPassword()}" />
+            </div>
+            <input type="submit" id="update" value="更新" class="btn btn-primary" />
+        </form>
+    </div>
+</div>
+</body>
+
+</html>

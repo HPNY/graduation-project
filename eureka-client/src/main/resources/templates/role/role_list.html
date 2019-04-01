@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html;charset=UTF-8"/>
+    <title>角色管理</title>
+    <script src="/jquery-1.8.3.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        body {
+            padding-top: 50px;
+        }
+
+        .starter-template {
+            padding: 40px 15px;
+            text-align: center;
+        }
+
+    </style>
+
+</head>
+
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">演示</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a th:href="@{/index}"><span class="glyphicon glyphicon-home"></span> 首页</a></li>
+                <li><a th:href="@{/user/user_list}"><span class="glyphicon glyphicon-user"></span> 用户管理</a></li>
+                <li class="active"><a th:href="@{/role/role_list}"><span class="glyphicon glyphicon-tag"></span>
+                    角色管理</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" class="btn btn-link" style="padding-top: 14px" value="注销"/>
+                </form>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        个人中心 <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a th:href="@{/message}"><span class="glyphicon glyphicon-file"></span> 个人信息</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-cog"></span> 设置</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
+<div class="container">
+    <form name="contain" method="post" action="/role/containing">
+        <div class="starter-template">
+            <table class="table table-striped">
+                <caption class="col-md-offset-11">
+                    <a th:href="@{/role/role_add}">
+                        <span class="glyphicon glyphicon-plus"></span>添加新角色
+                    </a>
+                </caption>
+                <div class="col-md-offset-9">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="根据角色名搜索">
+                        <span class="input-group-btn">
+                                <button class="btn btn-default" type="submit">
+                                    搜索
+                                </button>
+                        </span>
+                    </div>
+                    <!-- /input-group -->
+                </div>
+                <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>角色名</td>
+                    <td>描述</td>
+                    <td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="detail" th:each="SysRole,iterStat:${page}">
+                    <td th:text="${SysRole.getId()}"></td>
+                    <td th:text="${SysRole.getAuthority()}"></td>
+                    <td th:text="${SysRole.getDescription()}"></td>
+                    <td><a th:href="@{/role/findone/(id=${SysRole.getId()})}">修改</a>/<a
+                            th:href="@{/role/delete/(id=${SysRole.getId()})}">删除</a></td>
+                </tr>
+                </tbody>
+            </table>
+            <ul class="pager">
+                <li>
+                    <button type="button" id="Previous" class="btn btn-default" onclick="turning(-1)">&larr; Previous
+                    </button>
+                </li>
+                <li>当前是第<span id="pageCount" th:text="${pageCount}" style="border: none"/>页/总<span id="total"
+                                                                                                   th:text="${total}"
+                                                                                                   style="border: none"/>页
+                </li>
+                <li>
+                    <button type="button" id="Next" class="btn btn-default" onclick="turning(1)">Next &rarr;</button>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>
+</body>
+<script>
+
+    var nowpage = 0;
+
+    function turning(i) {
+        nowpage += i;
+        $.ajax({
+            type: "POST",
+            url: "/role/list",
+            data: {
+                pageCount: nowpage,
+                containing: $("#name").val()
+            },
+            success: function (result) {
+                $(".detail").remove();
+                var pageCount = result.number + 1;
+                var totalPage = result.totalPages;
+                var list = result.content;
+                if (list.length != 0) {
+                    for (var i = 0; i < list.length; i++) {
+                        var id = list[i].id;
+                        var authority = list[i].authority;
+                        var description = list[i].description;
+                        appendData(id, authority, description);
+                    }
+                }
+                $("#pageCount").text(pageCount);
+                $("#total").text(totalPage);
+                judge();
+            }
+        })
+    }
+
+    function appendData(id, authority,description) {
+        var text = '<tr class="detail"><td>' + id + '</td>' +
+            '<td>' + authority + '</td>' +
+            '<td>' + description + '</td>' +
+            '<td><a href="/role/findone/?id=' + id + '">修改</a>/<a href="/role/delete/?id=' + id + '">删除</a></td></tr>'
+
+        $("table").append(text);
+    }
+
+    var pageCount = document.getElementById("pageCount");
+    var total = document.getElementById("total");
+
+    function judge() {
+        if (pageCount.innerHTML != "1") {
+            document.getElementById("Previous").disabled = false;
+        } else {
+            document.getElementById("Previous").disabled = "disabled";
+        }
+        if (pageCount.innerText == total.innerText) {
+            document.getElementById("Next").disabled = "disabled";
+        } else {
+            document.getElementById("Next").disabled = false;
+        }
+    }
+
+    if (pageCount.innerHTML == "1") {
+        document.getElementById("Previous").disabled = "disabled";
+    }
+    if (pageCount.innerText == total.innerText) {
+        document.getElementById("Next").disabled = "disabled";
+    }
+</script>
+</html>
