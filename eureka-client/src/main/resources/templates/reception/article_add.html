@@ -11,7 +11,7 @@
             padding-top: 50px;
         }
 
-        .footer>.container {
+        .footer > .container {
             padding-right: 15px;
             padding-left: 15px;
         }
@@ -51,84 +51,84 @@
 
             <ul class="nav navbar-nav navbar-right">
                 <form action="/reception/logout" method="post">
-                    <input type="submit" class="btn btn-link" style="padding-top: 14px" value="注销" />
+                    <input type="submit" class="btn btn-link" style="padding-top: 14px" value="注销"/>
                 </form>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <form action="/reception/personal" method="post">
-                    <input type="submit" class="btn btn-link" style="padding-top: 14px" value="个人信息" />
+                    <input type="submit" class="btn btn-link" style="padding-top: 14px" value="个人信息"/>
                 </form>
             </ul>
         </div>
     </div>
 </nav>
-    <div class="container" style="margin-top: 10px">
-        <form th:action="@{/reception/article_add}" method="post">
-            <div class="form-group">
-                <label for="title">标题</label>
-                <input type="text" class="form-control" id="title" placeholder="请输入标题">
-            </div>
-            <div class="form-group">
-                <label>类别</label>
-                <select id="option" class="selectpicker" data-size="4" title="请选择一项">
-                    <option value=".NET">NET</option>
-                    <option value="JavaScript">JavaScript</option>
-                    <option value="JQuery">JQuery</option>
-                    <option value="AngularJS">AngularJS</option>
-                    <option value="Node.js">Nodejs</option>
-                    <option value="正则表达式">正则表达式</option>
-                    <option value="CSS">CSS</option>
-                    <option value="NoSql">NoSql</option>
-                    <option value="操作系统">操作系统</option>
-                    <option value="其他">其他</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="introduction">简介</label>
-                <input type="text" class="form-control" id="introduction" placeholder="请输入简介">
-            </div>
-            <label for="mainText">正文</label>
-            <div id="toolbar" class="toolbar">
-            </div>
-            <div style="padding: 5px 0; color: #ccc"></div>
-            <div id="mainText" class="mainText">
-                <!--可使用 min-height 实现编辑区域自动增加高度-->
-            </div>
-            <button type="button" class="btn btn-default btn-sm" id="submit" style="margin-top:10px">提交</button>
-        </form>
-    </div>
+<div class="container" style="margin-top: 10px">
+    <form th:action="@{/reception/article_add}" method="post">
+        <div class="form-group">
+            <label for="title">标题</label>
+            <input type="text" class="form-control" id="title" placeholder="请输入标题">
+        </div>
+        <div class="form-group">
+            <label>类别</label>
+            <select id="option" class="selectpicker" data-size="4" title="请选择一项">
+                <option value=".NET">NET</option>
+                <option value="JavaScript">JavaScript</option>
+                <option value="JQuery">JQuery</option>
+                <option value="AngularJS">AngularJS</option>
+                <option value="Node.js">Nodejs</option>
+                <option value="正则表达式">正则表达式</option>
+                <option value="CSS">CSS</option>
+                <option value="NoSql">NoSql</option>
+                <option value="操作系统">操作系统</option>
+                <option value="其他">其他</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="introduction">简介</label>
+            <input type="text" class="form-control" id="introduction" placeholder="请输入简介">
+        </div>
+        <label for="mainText">正文</label>
+        <div id="toolbar" class="toolbar">
+        </div>
+        <div style="padding: 5px 0; color: #ccc"></div>
+        <div id="mainText" class="mainText">
+            <!--可使用 min-height 实现编辑区域自动增加高度-->
+        </div>
+        <button type="button" class="btn btn-default btn-sm" id="submit" style="margin-top:10px">提交</button>
+    </form>
+</div>
 
-    <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap-select/1.12.4/js/i18n/defaults-zh_CN.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap-select/1.12.4/js/i18n/defaults-zh_CN.min.js"></script>
 
-    <script type="text/javascript" src="/wangEditor.min.js"></script>
+<script type="text/javascript" src="/wangEditor.min.js"></script>
 
-    <script type="text/javascript">
-        var E = window.wangEditor;
-        var editor1 = new E('#toolbar', '#mainText');  // 两个参数也可以传入 elem 对象，class 选择器
-        editor1.customConfig.uploadImgShowBase64 = true;  // 使用 base64 保存图片
-        editor1.create();
+<script type="text/javascript">
+    var E = window.wangEditor;
+    var editor1 = new E('#toolbar', '#mainText');  // 两个参数也可以传入 elem 对象，class 选择器
+    editor1.customConfig.uploadImgShowBase64 = true;  // 使用 base64 保存图片
+    editor1.create();
 
-        $("#submit").click(function () {
-            $.ajax({
-                url:'/reception/addArticle',
-                type:'POST',
-                data:{
-                    title:$("#title").val(),
-                    category:$("#option").val(),
-                    introduction:$("#introduction").val(),
-                    mainText:editor1.txt.html()
-                },
-                success:function (result) {
-                    if (result=='success'){
-                        window.location.href="/reception/index";
-                    }
+    $("#submit").click(function () {
+        $.ajax({
+            url: '/reception/addArticle',
+            type: 'POST',
+            data: {
+                title: $("#title").val(),
+                category: $("#option").val(),
+                introduction: $("#introduction").val(),
+                mainText: editor1.txt.html()
+            },
+            success: function (result) {
+                if (result == 'success') {
+                    window.location.href = "/reception/index";
                 }
-            })
+            }
         })
-    </script>
+    })
+</script>
 </body>
 <footer class="footer">
     <div class="container">

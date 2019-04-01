@@ -7,12 +7,13 @@
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style type="text/css">
-        body{
-            padding-top:50px;
+        body {
+            padding-top: 50px;
         }
-        .starter-template{
-            padding:40px 15px;
-            text-align:center;
+
+        .starter-template {
+            padding: 40px 15px;
+            text-align: center;
         }
     </style>
 </head>
@@ -52,20 +53,8 @@
 </nav>
 <div class="container">
     <div class="starter-template">
-        <!--<p>登录名：<span sec:authentication="name"></span></p>-->
-        <!--<p>角色：<span sec:authentication="principal.authorities"></span></p>-->
-        <!--<p>Username：<span sec:authentication="userDetails.username"></span></p>-->
-        <!--<p>Password：<span sec:authentication="userDetails.password"></span></p>-->
         <p>当前登录用户为：<span th:text="${user.getUsername()}"></span></p>
         <p>当前用户密码为：<span th:text="${user.getPassword()}"></span></p>
-        <!--<h1 th:text="${msg.title}"></h1>-->
-        <!--<p class="bg-primary" th:text="${msg.content}"></p>-->
-        <!--<div sec:authorize="hasRole('ROLE_ADMIN')">-->
-            <!--<P class="bg-info" th:text="${msg.etraInfo}"></P>-->
-        <!--</div>-->
-        <!--<div sec:authorize="hasRole('ROLE_USER')">-->
-            <!--<p class="bg-info">无更多信息显示</p>-->
-        <!--</div>-->
     </div>
 </div>
 </body>

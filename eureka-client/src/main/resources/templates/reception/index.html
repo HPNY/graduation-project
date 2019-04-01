@@ -96,23 +96,7 @@
             </div>
             <div class="panel-body">
                 <ul id="List">
-                    <!--<li>-->
-                    <!--<a>-->
-                    <!--<h3>Title</h3>-->
-                    <!--</a>-->
-                    <!--<span class="text-warning">categoty</span>-->
-                    <!--<span class="text-warning" style="margin-left:20px">createTime</span>-->
-                    <!--<p class="text-muted">introduction</p>-->
-                    <!--</li>-->
-                    <!--<hr>-->
-                    <!--<li>-->
-                    <!--<a>-->
-                    <!--<h3>Title</h3>-->
-                    <!--</a>-->
-                    <!--<span class="text-warning">categoty</span>-->
-                    <!--<span class="text-warning" style="margin-left:20px">createTime</span>-->
-                    <!--<p class="text-muted">introduction</p>-->
-                    <!--</li>-->
+
                 </ul>
             </div>
         </div>
@@ -143,13 +127,13 @@
 
     $("#search").click(function () {
         $.ajax({
-            url:'/reception/Containing',
-            type:'POST',
-            data:{
+            url: '/reception/Containing',
+            type: 'POST',
+            data: {
                 pageCount: 0,
                 title: $("#field").val()
             },
-            success:function (result) {
+            success: function (result) {
                 $(".articleList").remove();
                 $("hr").remove();
                 var pageCount = 1;
@@ -162,7 +146,7 @@
                         var category = list[i].category;
                         var createTime = list[i].createTime;
                         var introduction = list[i].introduction;
-                        appendData(id,title, category, createTime, introduction);
+                        appendData(id, title, category, createTime, introduction);
                     }
                 }
                 $(".active").removeClass("active");
@@ -195,7 +179,7 @@
                         var category = list[i].category;
                         var createTime = list[i].createTime;
                         var introduction = list[i].introduction;
-                        appendData(id,title, category, createTime, introduction);
+                        appendData(id, title, category, createTime, introduction);
                     }
                 }
                 liid = '#' + liid;

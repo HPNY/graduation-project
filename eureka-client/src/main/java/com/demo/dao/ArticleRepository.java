@@ -11,5 +11,5 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
     Page<Article> findAllByCategory(Pageable pageable,String category);
 
-    Page<Article> findAllByCategoryAndTitleContaining(Pageable pageable,String category,String title);
+    Page<Article> findAllByCategoryAndTitleContaining(Pageable pageable, String category, String title);
 }

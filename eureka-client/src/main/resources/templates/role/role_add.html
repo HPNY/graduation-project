@@ -40,7 +40,8 @@
             <ul class="nav navbar-nav">
                 <li><a th:href="@{/index}"><span class="glyphicon glyphicon-home"></span> 首页</a></li>
                 <li><a th:href="@{/user/user_list}"><span class="glyphicon glyphicon-user"></span> 用户管理</a></li>
-                <li class="active"><a th:href="@{/role/role_list}"><span class="glyphicon glyphicon-tag"></span> 角色管理</a></li>
+                <li class="active"><a th:href="@{/role/role_list}"><span class="glyphicon glyphicon-tag"></span>
+                    角色管理</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <form th:action="@{/logout}" method="post">
@@ -68,13 +69,13 @@
         <form name="form" th:action="@{/role/add}" method="post">
             <div class="form-group">
                 <label for="authority">角色名</label>
-                <input type="text" class="form-control" name="authority" value="" placeholder="角色名" />
+                <input type="text" class="form-control" name="authority" value="" placeholder="角色名"/>
             </div>
             <div class="form-group">
                 <label for="description">描述</label>
-                <input type="text" class="form-control" name="description" placeholder="描述" />
+                <input type="text" class="form-control" name="description" placeholder="描述"/>
             </div>
-            <input type="submit" id="add" value="新增" class="btn btn-primary" />
+            <input type="submit" id="add" value="新增" class="btn btn-primary"/>
         </form>
     </div>
 </div>

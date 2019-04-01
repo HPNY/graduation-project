@@ -6,13 +6,9 @@ import com.demo.service.ArticleService;
 import com.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -26,11 +22,6 @@ public class ReceptionController {
 
     @Autowired
     private UserService userService;
-
-//    @RequestMapping("/reception/index")
-//    public String index() {
-//        return "/reception/index";
-//    }
 
     @RequestMapping("/reception/login")
     public String login() {
@@ -49,15 +40,14 @@ public class ReceptionController {
 
     @RequestMapping("/reception/findById")
     public String findById(Integer id, Model model) {
-//        Article article = articleService.findById(id);
         model.addAttribute("id", id);
         return "/reception/article_detail";
     }
+
     @RequestMapping("/reception/findArticle")
     @ResponseBody
     public Article findArticle(Integer id) {
         Article article = articleService.findById(id);
-//        model.addAttribute("id", id);
         return article;
     }
 
@@ -129,7 +119,7 @@ public class ReceptionController {
         user.setNickname(nickname);
         user.setActualName(actualName);
         user.setSex(sex);
-        Date birthday = new Date(year - 1900, month, day);
+        Date birthday = new Date(year - 1900, month - 1, day);
         user.setBirthday(birthday);
         user.setIntroduction(introduction);
         user.getPassword();
@@ -140,7 +130,7 @@ public class ReceptionController {
     @RequestMapping("/reception/Containing")
     @ResponseBody
     public Page<Article> findAllByTitleContaining(Integer pageCount, String title) {
-        Page<Article> page= articleService.findAllByTitleContaining(title, pageCount);
+        Page<Article> page = articleService.findAllByTitleContaining(title, pageCount);
         return page;
     }
 

@@ -2,7 +2,6 @@ package com.demo.service;
 
 import com.demo.dao.RoleRepository;
 import com.demo.dao.UserRepository;
-import com.demo.entity.Role;
 import com.demo.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

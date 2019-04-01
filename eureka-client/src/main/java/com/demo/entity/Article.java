@@ -27,7 +27,7 @@ public class Article {
         this.introduction = introduction;
         this.mainText = mainText;
         this.category = category;
-        this.createTime=new Date();
+        this.createTime = new Date();
     }
 
     public Article(Integer id, String title, String introduction, String mainText, String category) {
@@ -36,7 +36,7 @@ public class Article {
         this.introduction = introduction;
         this.mainText = mainText;
         this.category = category;
-        this.createTime=new Date();
+        this.createTime = new Date();
     }
 
     public Integer getId() {

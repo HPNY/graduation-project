@@ -108,8 +108,6 @@ public class UserController {
      */
     @RequestMapping("/user/user_list")
     public String findAllUser(Integer pageCount, Model model) {
-//        List<User> list = userService.findAllUser();
-//        model.addAttribute("list", list);
         if (pageCount == null) {
             pageCount = 0;
         }
@@ -130,8 +128,6 @@ public class UserController {
      */
     @RequestMapping("/user/containing")
     public String findAllByUsernameContaining(Integer pageCount, String username, Model model) {
-//        List<User> list = userService.findAllByUsernameContaining(username);
-//        model.addAttribute("list", list);
         if (pageCount == null) {
             pageCount = 0;
         }

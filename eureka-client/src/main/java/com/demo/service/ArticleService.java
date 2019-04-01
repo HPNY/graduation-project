@@ -23,7 +23,7 @@ public class ArticleService {
 
 
     public Article addArticle(Article article) {
-        Date date=new Date();
+        Date date = new Date();
         article.setCreateTime(date);
         return articleRepository.save(article);
     }
@@ -52,15 +52,15 @@ public class ArticleService {
         return articleRepository.findById(id).orElse(null);
     }
 
-    public Page<Article> findAllByCategory(String category,Integer pageCount){
+    public Page<Article> findAllByCategory(String category, Integer pageCount) {
         Sort sort = new Sort(Sort.Direction.ASC, sortProperties);
         Pageable pageable = PageRequest.of(pageCount, pageSize, sort);
-        return articleRepository.findAllByCategory(pageable,category);
+        return articleRepository.findAllByCategory(pageable, category);
     }
 
-    public Page<Article> findAllByCategoryAndTitleContaining( Integer pageCount,String category,String title){
+    public Page<Article> findAllByCategoryAndTitleContaining(Integer pageCount, String category, String title) {
         Sort sort = new Sort(Sort.Direction.ASC, sortProperties);
         Pageable pageable = PageRequest.of(pageCount, pageSize, sort);
-        return articleRepository.findAllByCategoryAndTitleContaining(pageable,category,title);
+        return articleRepository.findAllByCategoryAndTitleContaining(pageable, category, title);
     }
 }

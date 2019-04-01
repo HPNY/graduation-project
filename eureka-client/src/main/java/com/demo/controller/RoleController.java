@@ -9,8 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * 角色页面控制层
@@ -75,8 +73,6 @@ public class RoleController {
      */
     @RequestMapping("/role/role_list")
     public String findAllRole(Integer pageCount, Model model) {
-//        List<Role> list = roleService.findAllRole();
-//        model.addAttribute("list", list);
         if (pageCount == null) {
             pageCount = 0;
         }
@@ -112,12 +108,6 @@ public class RoleController {
     public String addPage() {
         return "/role/role_add";
     }
-
-//    @RequestMapping("/role/next")
-//    public String next(Page page,Model model){
-//        page.nextPageable();
-//    }
-
 
     @ResponseBody
     @RequestMapping("/role/list")
