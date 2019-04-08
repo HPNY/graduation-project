@@ -1,6 +1,7 @@
 package com.demo.entity;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class Article {
     private String mainText;
     private String category;
     private String author;
-    private Date createTime;
+    private String createTime;
 
     @OneToMany(cascade = {CascadeType.ALL})
     private List<Comment> commentList;
@@ -27,7 +28,10 @@ public class Article {
         this.introduction = introduction;
         this.mainText = mainText;
         this.category = category;
-        this.createTime = new Date();
+        Date date = new Date();
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.createTime=sdf.format(date);
+
     }
 
     public Article(Integer id, String title, String introduction, String mainText, String category) {
@@ -36,7 +40,9 @@ public class Article {
         this.introduction = introduction;
         this.mainText = mainText;
         this.category = category;
-        this.createTime = new Date();
+        Date date = new Date();
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.createTime=sdf.format(date);
     }
 
     public Integer getId() {
@@ -95,11 +101,11 @@ public class Article {
         this.author = author;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 }

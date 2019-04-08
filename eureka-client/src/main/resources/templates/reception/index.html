@@ -167,6 +167,7 @@
                 pageCount: 0,
             },
             success: function (result) {
+                $("#field").val("");
                 $(".articleList").remove();
                 $("hr").remove();
                 var pageCount = 1;
@@ -250,13 +251,20 @@
         } else {
             document.getElementById("Next").disabled = false;
         }
+        if (total.innerHTML == "0") {
+            document.getElementById("Next").disabled = "disabled";
+        }
     }
 
     if (pageCount.innerHTML == "1") {
         document.getElementById("Previous").disabled = "disabled";
     }
+    if (total.innerHTML == "0") {
+        document.getElementById("Next").disabled = "disabled";
+    }
     if (pageCount.innerText == total.innerText) {
         document.getElementById("Next").disabled = "disabled";
     }
+
 </script>
 </html>

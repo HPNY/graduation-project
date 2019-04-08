@@ -56,6 +56,11 @@
                     <input type="submit" class="btn btn-link" style="padding-top: 14px" value="个人信息"/>
                 </form>
             </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <form action="/reception/favorite" method="post">
+                    <input type="submit" class="btn btn-link" style="padding-top: 14px" value="个人收藏"/>
+                </form>
+            </ul>
         </div>
     </div>
 </nav>
@@ -71,7 +76,7 @@
                     <img src="/微信图片_20190318143802.jpg" height="250" width="250" class="img-circle" alt="这只是个头像">
                     <br>
                     <br>
-                    <!--<a href="#" style="text-align: center;display: block;">修改头像</a>-->
+                    <a href="#" style="text-align: center;display: block;" data-toggle="modal" data-target="#updatepassword">修改密码</a>
                     <br>
                     <br>
                 </div>
@@ -86,7 +91,7 @@
                         <li class="detail" id="now_nickname">昵称：<span th:text="${user.getNickname()}"></span></li>
                         <li class="detail" id="now_actual_name">实名：<span th:text="${user.getActualName()}"></span></li>
                         <li class="detail" id="now_sex">性别：<span th:text="${user.getSex()}"></span></li>
-                        <li class="detail" id="now_birthday">生日：<span th:text="${user.getBirthday()}"></span></li>
+                        <li class="detail" id="now_birthday">生日：<span th:text="${birthday}"></span></li>
                         <li class="detail" id="now_introduction">简介：<span th:text="${user.getIntroduction()}"></span>
                         </li>
                     </ul>
@@ -95,6 +100,7 @@
         </div>
     </div>
 </div>
+<!--修改个人资料模态框-->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -145,6 +151,35 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭
                 </button>
                 <button type="button" class="btn btn-primary" id="submit">
+                    提交更改
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!--修改密码模态框-->
+<div class="modal fade" id="updatepassword" tabindex="-1" role="dialog" aria-labelledby="updatepassword" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel1">
+                    修改密码
+                </h4>
+            </div>
+            <div class="modal-body">
+                <label for="password" class="control-label" style="font-weight: normal">密码：</label>
+                <input type="password" class="form-control" id="password">
+                <label for="confirm" class="control-label" style="font-weight: normal">确认密码：</label>
+                <input type="password" class="form-control" id="confirm">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <button type="button" class="btn btn-primary" id="submitUpdate">
                     提交更改
                 </button>
             </div>
@@ -275,6 +310,26 @@
         })
     })
 
+    $("#submitUpdate").click(function () {
+        if ($("#confirm").val()==$("#password").val()){
+            $.ajax({
+                url:'/reception/updatepassword',
+                type:'POST',
+                data:{
+                    password:$("#password").val(),
+                    userId:$("#userId").text()
+                },
+                success:function (result) {
+                    if (result == 'success') {
+                        window.location.href = "/reception/personal";
+                    }
+                }
+            })
+        } else {
+            alert("两次输入的密码不一致！");
+        }
+        
+    })
 
 </script>
 

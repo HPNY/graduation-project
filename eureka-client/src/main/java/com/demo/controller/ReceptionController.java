@@ -1,18 +1,22 @@
 package com.demo.controller;
 
 import com.demo.entity.Article;
+import com.demo.entity.Collect;
 import com.demo.entity.User;
 import com.demo.service.ArticleService;
 import com.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class ReceptionController {
@@ -22,6 +26,9 @@ public class ReceptionController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @RequestMapping("/reception/login")
     public String login() {
@@ -40,7 +47,10 @@ public class ReceptionController {
 
     @RequestMapping("/reception/findById")
     public String findById(Integer id, Model model) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Integer userId=user.getId();
         model.addAttribute("id", id);
+        model.addAttribute("userid", userId);
         return "/reception/article_detail";
     }
 
@@ -152,8 +162,54 @@ public class ReceptionController {
     public String personal(Model model) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         user = userService.findById(user.getId());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        model.addAttribute("birthday", sdf.format(user.getBirthday()));
         model.addAttribute("user", user);
         return "/reception/personal";
     }
+
+    @RequestMapping("/reception/updatepassword")
+    @ResponseBody
+    public String updatePassword(Integer userId, String password) {
+        User user = userService.findById(userId);
+        user.setPassword(bCryptPasswordEncoder.encode(password));
+        userService.updateUser(user);
+        return "success";
+    }
+
+    @RequestMapping("/reception/addCollect")
+    @ResponseBody
+    public String addCollect(Collect collect) {
+        articleService.addCollect(collect);
+        return "success";
+    }
+
+    @RequestMapping("/reception/deleteCollect")
+    @ResponseBody
+    public String deleteCollect(Collect collect) {
+        articleService.deleteCollect(collect);
+        return "success";
+    }
+
+    @RequestMapping("/reception/findAllCollect")
+    @ResponseBody
+    public List findAllCollect() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<Article> list = articleService.findCollectArticle(user.getId());
+        return list;
+    }
+
+    @RequestMapping("/reception/findCollect")
+    @ResponseBody
+    public boolean findCollect(Integer articleId) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return articleService.findCollect(user.getId(), articleId);
+    }
+
+    @RequestMapping("/reception/favorite")
+    public String favorite(){
+        return "/reception/favorite";
+    }
+
 }
 

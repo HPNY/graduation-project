@@ -55,12 +55,15 @@
     </div>
 </nav>
 <input type="hidden" id="articleId" th:value="${id}">
+<input type="hidden" id="userId" th:value="${userid}">
 <div class="container" style="margin-top: 10px">
 
     <div class="article-box">
         <div class="article-header-box">
             <div class="article-title-box">
                 <h2 id="title"></h2>
+                <a><span class="glyphicon glyphicon-heart-empty" style="float: right"></span></a>
+                <a><span class="glyphicon glyphicon-heart" style="float: right"></span></a>
             </div>
             <div class="article-info-box">
                 <span class="create-time" id="createTime" style="margin-right:10px"></span>
@@ -81,18 +84,63 @@
     </div>
 </footer>
 <script>
-    $.ajax({
-        url: '/reception/findArticle',
-        type: 'POST',
-        data: {
-            id: $("#articleId").val()
-        },
-        success: function (result) {
-            $("#title").text(result.title);
-            $("#createTime").text(result.createTime);
-            $("#author").text(result.author);
-            $("#article").html(result.mainText);
-        }
+        $.ajax({
+            url: '/reception/findArticle',
+            type: 'POST',
+            data: {
+                id: $("#articleId").val()
+            },
+            success: function (result) {
+                $("#title").text(result.title);
+                $("#createTime").text(result.createTime);
+                $("#author").text(result.author);
+                $("#article").html(result.mainText);
+            }
+        })
+        $.ajax({
+            url: '/reception/findCollect',
+            type: 'POST',
+            data: {
+                articleId: $("#articleId").val(),
+                userId:$("#userId").val()
+            },
+            success: function (result) {
+                if (result == true) {
+                    $(".glyphicon-heart-empty").hide();
+                } else {
+                    $(".glyphicon-heart").hide();
+                }
+            }
+        })
+
+    $(".glyphicon-heart-empty").click(function () {
+        $.ajax({
+            url: '/reception/addCollect',
+            type: 'POST',
+            data: {
+                articleId: $("#articleId").val(),
+                userId:$("#userId").val()
+            },
+            success: function (result) {
+                $(".glyphicon-heart-empty").hide();
+                $(".glyphicon-heart").show();
+            }
+        })
+    })
+
+    $(".glyphicon-heart").click(function () {
+        $.ajax({
+            url: '/reception/deleteCollect',
+            type: 'POST',
+            data: {
+                articleId: $("#articleId").val(),
+                userId:$("#userId").val()
+            },
+            success: function (result) {
+                $(".glyphicon-heart").hide();
+                $(".glyphicon-heart-empty").show();
+            }
+        })
     })
 </script>
 </html>
