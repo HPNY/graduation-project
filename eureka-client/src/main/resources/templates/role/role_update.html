@@ -66,19 +66,36 @@
 <div class="container">
     <div class="starter-template">
         <form name="form" th:action="@{/role/role_update}" method="post">
-            <input type="hidden" name="id" th:value="${role.getId()}">
+            <input type="hidden" id="roleId" name="id" th:value="${role.getId()}">
             <div class="form-group">
                 <label for="authority">角色名</label>
-                <input type="text" class="form-control" name="authority" th:value="${role.getAuthority()}" />
+                <input type="text" id="authority" class="form-control" name="authority" th:value="${role.getAuthority()}" />
             </div>
             <div class="form-group">
                 <label for="description">描述</label>
-                <input type="text" class="form-control" name="description" th:value="${role.getDescription()}" />
+                <input type="text" id="description" class="form-control" name="description" th:value="${role.getDescription()}" />
             </div>
-            <input type="submit" id="update" value="更新" class="btn btn-primary" />
+            <input type="button" id="update" value="更新" class="btn btn-primary" />
         </form>
     </div>
 </div>
 </body>
-
+<script>
+    $("#update").click(function () {
+        $.ajax({
+            url: '/role/role_update',
+            type: 'POST',
+            data: {
+                id:$("#roleId").val(),
+                authority: $("#authority").val(),
+                description: $("#description").val(),
+            },
+            success: function (result) {
+                if (result == 'success') {
+                    window.location.href = "/role/role_list";
+                }
+            }
+        })
+    })
+</script>
 </html>

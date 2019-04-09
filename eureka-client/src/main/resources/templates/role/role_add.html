@@ -69,16 +69,32 @@
         <form name="form" th:action="@{/role/add}" method="post">
             <div class="form-group">
                 <label for="authority">角色名</label>
-                <input type="text" class="form-control" name="authority" value="" placeholder="角色名"/>
+                <input type="text" id="authority" class="form-control" name="authority" value="" placeholder="角色名"/>
             </div>
             <div class="form-group">
                 <label for="description">描述</label>
-                <input type="text" class="form-control" name="description" placeholder="描述"/>
+                <input type="text" id="description" class="form-control" name="description" placeholder="描述"/>
             </div>
-            <input type="submit" id="add" value="新增" class="btn btn-primary"/>
+            <input type="button" id="add" value="新增" class="btn btn-primary"/>
         </form>
     </div>
 </div>
 </body>
-
+<script>
+    $("#add").click(function () {
+        $.ajax({
+            url: '/role/add',
+            type: 'POST',
+            data: {
+                authority: $("#authority").val(),
+                description: $("#description").val(),
+            },
+            success: function (result) {
+                if (result == 'success') {
+                    window.location.href = "/role/role_list";
+                }
+            }
+        })
+    })
+</script>
 </html>

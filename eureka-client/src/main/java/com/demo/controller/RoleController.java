@@ -9,40 +9,24 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
-/**
- * 角色页面控制层
- */
 @Controller
 public class RoleController {
 
     @Autowired
     private RoleService roleService;
 
-    /**
-     * 新增权限角色
-     *
-     * @param role
-     * @param model
-     * @return
-     */
     @RequestMapping("/role/add")
-    public String addRole(Role role, Model model) {
+    @ResponseBody
+    public String addRole(Role role) {
         roleService.addRole(role);
-        return findAllRole(0, model);
+        return "success";
     }
 
-    /**
-     * 修改权限角色信息
-     *
-     * @param role
-     * @param model
-     * @return
-     */
     @RequestMapping("/role/role_update")
-    public String updateRole(Role role, Model model) {
+    @ResponseBody
+    public String updateRole(Role role) {
         roleService.updateRole(role);
-        return findAllRole(0, model);
+        return "success";
     }
 
     @RequestMapping("/role/findone")
@@ -52,25 +36,13 @@ public class RoleController {
         return "/role/role_update";
     }
 
-    /**
-     * 删除权限角色
-     *
-     * @param id
-     * @param model
-     * @return
-     */
     @RequestMapping("/role/delete")
-    public String delRole(Integer id, Model model) {
+    @ResponseBody
+    public String delRole(Integer id) {
         roleService.delRole(id);
-        return findAllRole(0, model);
+        return "success";
     }
 
-    /**
-     * 显示所有权限角色
-     *
-     * @param model
-     * @return
-     */
     @RequestMapping("/role/role_list")
     public String findAllRole(Integer pageCount, Model model) {
         if (pageCount == null) {
@@ -84,13 +56,6 @@ public class RoleController {
         return "/role/role_list";
     }
 
-    /**
-     * 根据用户输入字段模糊查找权限名包含字段的角色
-     *
-     * @param name
-     * @param model
-     * @return
-     */
     @RequestMapping("/role/containing")
     public String findAllByNameContaining(Integer pageCount, String name, Model model) {
         if (pageCount == null) {

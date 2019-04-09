@@ -17,9 +17,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * 用户相关控制层
- */
 @Controller
 public class UserController {
 
@@ -32,54 +29,28 @@ public class UserController {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-
-    /**
-     * 用户注册
-     * 成功返回登录页面
-     * 失败返回注册界面并显示账号重名
-     *
-     * @param model
-     * @return
-     */
     @RequestMapping("/user/user_add")
-    public String addUser(HttpServletRequest request, Model model) {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        User user = new User(username, password);
+    @ResponseBody
+    public String addUser(User user) {
         user = userService.addUser(user);
         if (user == null) {
-            model.addAttribute("userExist", true);
-            return "/register";
+            return "userExist";
         }
-        return "/login";
+        return "success";
     }
 
-
-    /**
-     * 更新用户并返回列表页
-     *
-     * @param user
-     * @param model
-     * @return
-     */
     @RequestMapping("/user/user_update")
-    public String updateUser(User user, Model model) {
+    @ResponseBody
+    public String updateUser(User user) {
         String username = user.getUsername();
         String password = user.getPassword();
         user = userService.findById(user.getId());
         user.setUsername(username);
         user.setPassword(bCryptPasswordEncoder.encode(password));
         userService.updateUser(user);
-        return findAllUser(0, model);
+        return "success";
     }
 
-    /**
-     * 根据ID查询用户
-     *
-     * @param id
-     * @param model
-     * @return
-     */
     @RequestMapping("/user/findone")
     public String findoneUser(Integer id, Model model) {
         User user = userService.findById(id);
@@ -87,45 +58,18 @@ public class UserController {
         return "/user/user_update";
     }
 
-    /**
-     * 根据ID删除用户
-     *
-     * @param id
-     * @param model
-     * @return
-     */
     @RequestMapping("/user/delete")
-    public String delUser(Integer id, Model model) {
+    @ResponseBody
+    public String delUser(Integer id) {
         userService.delUser(id);
-        return findAllUser(0, model);
+        return "success";
     }
 
-    /**
-     * 显示所有用户
-     *
-     * @param model
-     * @return
-     */
     @RequestMapping("/user/user_list")
-    public String findAllUser(Integer pageCount, Model model) {
-        if (pageCount == null) {
-            pageCount = 0;
-        }
-        Page<User> page = userService.findAllUser(pageCount);
-        model.addAttribute("page", page);
-        Integer total = page.getTotalPages();
-        model.addAttribute("pageCount", pageCount + 1);
-        model.addAttribute("total", total);
+    public String findAllUser() {
         return "/user/user_list";
     }
 
-    /**
-     * 根据用户输入字段模糊查找用户名包含字段的用户
-     *
-     * @param username
-     * @param model
-     * @return
-     */
     @RequestMapping("/user/containing")
     public String findAllByUsernameContaining(Integer pageCount, String username, Model model) {
         if (pageCount == null) {
@@ -139,13 +83,6 @@ public class UserController {
         return "/user/user_list";
     }
 
-    /**
-     * 个人信息界面
-     *
-     * @param request
-     * @param model
-     * @return
-     */
     @RequestMapping("/message")
     public String message(HttpServletRequest request, Model model) {
         Principal principal = request.getUserPrincipal();
@@ -191,6 +128,6 @@ public class UserController {
         }
         user.setAuthorities(list);
         userService.updateUser(user);
-        return findAllUser(0, model);
+        return "/user/user_list";
     }
 }

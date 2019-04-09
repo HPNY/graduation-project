@@ -78,13 +78,6 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="detail" th:each="SysUser,iterStat:${page}">
-                <td th:text="${SysUser.getId()}"></td>
-                <td th:text="${SysUser.getUsername()}"></td>
-                <td><a th:href="@{/user/findone/(id=${SysUser.getId()})}">修改</a>/<a
-                        th:href="@{/user/delete/(id=${SysUser.getId()})}">删除</a></td>
-                <td><a th:href="@{/user/role/(id=${SysUser.getId()})}">修改角色</a></td>
-            </tr>
             </tbody>
         </table>
         <ul class="pager">
@@ -106,6 +99,29 @@
 <script>
 
     var nowpage = 0;
+
+    $.ajax({
+        type: "POST",
+        url: "/user/list",
+        data: {
+            pageCount: 0,
+        },
+        success: function (result) {
+            var pageCount = result.number + 1;
+            var totalPage = result.totalPages;
+            var list = result.content;
+            if (list.length != 0) {
+                for (var i = 0; i < list.length; i++) {
+                    var id = list[i].id;
+                    var username = list[i].username;
+                    appendData(id, username);
+                }
+            }
+            $("#pageCount").text(pageCount);
+            $("#total").text(totalPage);
+            judge();
+        }
+    })
 
     function turning(i) {
         nowpage += i;
@@ -138,7 +154,7 @@
     function appendData(id, username) {
         var text = '<tr class="detail"><td>' + id + '</td>' +
             '<td>' + username + '</td>' +
-            '<td><a href="/user/findone/?id=' + id + '">修改</a>/<a href="/user/delete/?id=' + id + '">删除</a></td>' +
+            '<td><a href="/user/findone/?id=' + id + '">修改</a>/<a onclick="deleteUser(' + id + ')">删除</a></td>' +
             '<td><a href="/user/role/?id=' + id + '">修改角色</a></td></tr>'
 
         $("table").append(text);
@@ -165,6 +181,21 @@
     }
     if (pageCount.innerText == total.innerText) {
         document.getElementById("Next").disabled = "disabled";
+    }
+
+    function deleteUser(i) {
+        $.ajax({
+            url: '/user/delete',
+            type: 'POST',
+            data: {
+                id: i
+            },
+            success: function (result) {
+                if (result == 'success') {
+                    window.location.href = "/user/user_list";
+                }
+            }
+        })
     }
 </script>
 </html>

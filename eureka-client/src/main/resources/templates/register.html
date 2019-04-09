@@ -36,33 +36,50 @@
         <div class="col-md-2 column">
         </div>
         <div class="col-md-6 column">
-            <form class="form-signin" name="form" th:action="@{/user/user_add}" method="post">
-                <p th:if="${userExist}" class="bg-warning">已存在同名用户</p>
-                <h2 class="form-signin-heading" style="margin-bottom: 20px;">Please sign up</h2>
-                <div class="form-group">
-                    <label for="username" class="col-sm-2 control-label">Username</label>
-                    <div class="col-sm-10">
-                        <input type="text" id="username" name="username" class="form-control" placeholder="Username"
-                               required autofocus>
-                    </div>
+            <h2 class="form-signin-heading" style="margin-bottom: 20px;">Please sign up</h2>
+            <div class="form-group">
+                <label for="username" class="col-sm-2 control-label">Username</label>
+                <div class="col-sm-10">
+                    <input type="text" id="username" name="username" class="form-control" placeholder="Username"
+                           required autofocus>
                 </div>
-                <div class="form-group">
-                    <label for="password" class="col-sm-2 control-label">Password</label>
-                    <div class="col-sm-10">
-                        <input type="password" id="password" name="password" class="form-control" placeholder="Password"
-                               required>
-                    </div>
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-sm-2 control-label">Password</label>
+                <div class="col-sm-10">
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Password"
+                           required>
                 </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-default">Sign up</button>
-                        <a th:href="@{/login}" class="button btn btn-default">return</a>
-                    </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="button" id="add" class="btn btn-default">Sign up</button>
+                    <a th:href="@{/login}" class="button btn btn-default">return</a>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
 </body>
-
+<script>
+    $("#add").click(function () {
+        $.ajax({
+            url: '/user/user_add',
+            type: 'POST',
+            data: {
+                username: $("#username").val(),
+                password: $("#password").val(),
+            },
+            success: function (result) {
+                if (result == 'success') {
+                    window.location.href = "/login";
+                } else if (result == 'userExist') {
+                    alert("用户已经存在");
+                    $("#username").val("");
+                    $("#password").val("");
+                }
+            }
+        })
+    })
+</script>
 </html>

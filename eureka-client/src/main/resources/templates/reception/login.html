@@ -42,15 +42,15 @@
 <body>
 <form action="/reception/login" method="post">
     <div class="login">
-        <h2 class="form-signin-heading login-title">Please sign in</h2>
+        <h2 class="form-signin-heading login-title">欢迎登录前台展示系统</h2>
         <p th:if="${param.logout}" class="bg-warning">已成功注销</p>
         <p th:if="${param.error}" class="bg-danger">有错误，请重试</p>
         <div class="form-group login-input">
-            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required
+            <input type="text" id="username" name="username" class="form-control" placeholder="请输入用户名" required
                    autofocus>
         </div>
         <div class="form-group login-input">
-            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+            <input type="password" id="password" name="password" class="form-control" placeholder="请输入密码" required>
         </div>
         <div class="form-group login-input">
             <button type="submit" class="btn btn-default login-button">Sign in</button>
