@@ -44,7 +44,10 @@ public class MultiHttpSecurityConfiguration {
 
             http.authorizeRequests()
                     .antMatchers("/reception/index", "/reception/findById", "/reception/addArticle",
-                            "/reception/personal", "/changeInformation", "/reception/findall", "/reception/findAllByCategory")
+                            "/reception/personal", "/reception/changeInformation", "/reception/findall", "/reception/findAllByCategory","/reception/article_add"
+                    ,"/reception/findById","/reception/findArticle","/reception/update","/reception/updateArticle","/reception/deleteArticle"
+                    ,"/reception/findAllByTitle","/reception/Containing","/reception/updatepassword","/reception/addCollect","/reception/deleteCollect"
+                    ,"/reception/findAllCollect","/reception/findCollect","/reception/favorite","/reception/judge")
                     .hasRole("normal");
 
             http.csrf().disable();

@@ -76,7 +76,7 @@ public class RoleController {
 
     @ResponseBody
     @RequestMapping("/role/list")
-    public Page findAll(Integer pageCount, String containing) {
+    public Page findAllRole(Integer pageCount, String containing) {
         Page page;
         if (containing == null) {
             page = roleService.findAllRoleByPage(pageCount);

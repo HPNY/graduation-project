@@ -1,5 +1,7 @@
 package com.demo.controller;
 
+import com.demo.entity.User;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -27,11 +29,11 @@ public class MainController {
      * @return
      */
     @RequestMapping("/login")
-    public String login(HttpServletRequest request) {
-        if (request.getUserPrincipal() != null) {
-            return "/index";
+    public String login() {
+        if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof String) {
+            return "/login";
         }
-        return "/login";
+        return "/index";
     }
 
     /**

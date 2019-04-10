@@ -69,7 +69,7 @@
                 <h4>文章分类</h4>
             </li>
             <a onclick="change('全部分类')" class="list-group-item active" id="全部分类">全部分类</a>
-            <a onclick="change('NET')" class="list-group-item" id="NET">.NET</a>
+            <a onclick="change('NET')" class="list-group-item" id="NET">NET</a>
             <a onclick="change('JavaScript')" class="list-group-item" id="JavaScript">JavaScript</a>
             <a onclick="change('JQuery')" class="list-group-item" id="JQuery">JQuery</a>
             <a onclick="change('AngularJS')" class="list-group-item" id="AngularJS">AngularJS</a>
@@ -117,7 +117,7 @@
 </div>
 
 </body>
-<footer class="footer">
+<footer style="position: fixed" class="footer">
     <div class="container">
         <span class="text-muted">Place sticky footer content here.</span>
     </div>
@@ -131,7 +131,8 @@
             type: 'POST',
             data: {
                 pageCount: 0,
-                title: $("#field").val()
+                title: $("#field").val(),
+                category: $(".active").text()
             },
             success: function (result) {
                 $(".articleList").remove();
@@ -149,8 +150,6 @@
                         appendData(id, title, category, createTime, introduction);
                     }
                 }
-                $(".active").removeClass("active");
-                $("#全部分类").addClass("active");
                 $("#pageCount").text(pageCount);
                 $("#total").text(totalPage);
                 judge();

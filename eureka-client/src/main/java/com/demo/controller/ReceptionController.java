@@ -31,12 +31,12 @@ public class ReceptionController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @RequestMapping("/reception/login")
-    public String login() {
+    public String loginReception() {
         return "/reception/login";
     }
 
     @RequestMapping("/reception/register")
-    public String register() {
+    public String registerReception() {
         return "/reception/register";
     }
 
@@ -48,7 +48,7 @@ public class ReceptionController {
     @RequestMapping("/reception/findById")
     public String findById(Integer id, Model model) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Integer userId=user.getId();
+        Integer userId = user.getId();
         model.addAttribute("id", id);
         model.addAttribute("userid", userId);
         return "/reception/article_detail";
@@ -64,13 +64,19 @@ public class ReceptionController {
 
     @RequestMapping("/reception/addArticle")
     @ResponseBody
-    public String addArticle(Article article, Model model) {
+    public String addArticle(Article article) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        String author = user.getNickname();
+        String author = user.getUsername();
         article.setAuthor(author);
         articleService.addArticle(article);
         return "success";
+    }
+
+    @RequestMapping("/reception/update")
+    public String update(Integer id, Model model) {
+        model.addAttribute("id", id);
+        return "/reception/article_update";
     }
 
     @RequestMapping("/reception/index")
@@ -87,9 +93,10 @@ public class ReceptionController {
     }
 
     @RequestMapping("/reception/updateArticle")
-    public String updateArticle(Article article, Model model) {
+    @ResponseBody
+    public String updateArticle(Article article) {
         articleService.updateArticle(article);
-        return findAll(0, model);
+        return "success";
     }
 
     @RequestMapping("/reception/deleteArticle")
@@ -112,8 +119,9 @@ public class ReceptionController {
         return page;
     }
 
+    @ResponseBody
     @RequestMapping("/reception/findAllByTitle")
-    public String findAllByTitle(String title, Integer pageCount, Model model) {
+    public String findAllByTitle(String title, Integer pageCount) {
         if (pageCount == null) {
             pageCount = 0;
         }
@@ -139,8 +147,12 @@ public class ReceptionController {
 
     @RequestMapping("/reception/Containing")
     @ResponseBody
-    public Page<Article> findAllByTitleContaining(Integer pageCount, String title) {
-        Page<Article> page = articleService.findAllByTitleContaining(title, pageCount);
+    public Page<Article> findAllByTitleContaining(Integer pageCount, String title, String category) {
+        Page<Article> page;
+        if (category.equals("全部分类"))
+            page = articleService.findAllByTitleContaining(title, pageCount);
+        else
+            page = articleService.findAllByCategoryAndTitleContaining(pageCount, category, title);
         return page;
     }
 
@@ -149,7 +161,10 @@ public class ReceptionController {
     public Page<Article> findall(Integer pageCount, String title, String category) {
         Page<Article> page;
         if (title == null || title.equals("")) {
-            page = articleService.findAllByCategory(category, pageCount);
+            if (category.equals("全部分类"))
+                page = articleService.findAllArticle(pageCount);
+            else
+                page = articleService.findAllByCategory(category, pageCount);
         } else if (category.equals("全部分类")) {
             page = articleService.findAllByTitleContaining(title, pageCount);
         } else {
@@ -180,6 +195,8 @@ public class ReceptionController {
     @RequestMapping("/reception/addCollect")
     @ResponseBody
     public String addCollect(Collect collect) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        collect.setId(user.getId());
         articleService.addCollect(collect);
         return "success";
     }
@@ -207,9 +224,16 @@ public class ReceptionController {
     }
 
     @RequestMapping("/reception/favorite")
-    public String favorite(){
+    public String favorite() {
         return "/reception/favorite";
     }
 
+    @RequestMapping("/reception/judge")
+    @ResponseBody
+    public boolean judge(Integer articleId) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return user.getUsername().equals(articleService.findById(articleId).getAuthor());
+    }
 }
+
 

@@ -5,14 +5,13 @@ import com.demo.service.RoleService;
 import com.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -84,9 +83,8 @@ public class UserController {
     }
 
     @RequestMapping("/message")
-    public String message(HttpServletRequest request, Model model) {
-        Principal principal = request.getUserPrincipal();
-        User user = userService.findByUsername(principal.getName());
+    public String message(Model model) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         model.addAttribute("user", user);
         return "/message";
     }
@@ -117,17 +115,24 @@ public class UserController {
     }
 
     @RequestMapping("/user/user")
-    public String updateRole(HttpServletRequest request, Model model) {
-        String[] roles = request.getParameterValues("role");
-        Integer userId = Integer.parseInt(request.getParameter("idNo"));
-        User user = userService.findById(userId);
+    public String updateRole(String[] role,Integer idNo) {
+//        String[] roles = request.getParameterValues("role");
+//        Integer userId = Integer.parseInt(request.getParameter("idNo"));
+        User user = userService.findById(idNo);
         List list = new ArrayList();
-        for (String temp : roles) {
+        for (String temp : role) {
             Integer id = Integer.parseInt(temp);
             list.add(roleService.findById(id));
         }
         user.setAuthorities(list);
         userService.updateUser(user);
         return "/user/user_list";
+    }
+
+    @RequestMapping("/user/getuser")
+    @ResponseBody
+    public Integer getUser(){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return user.getId();
     }
 }

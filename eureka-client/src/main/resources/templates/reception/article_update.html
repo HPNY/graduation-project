@@ -64,7 +64,7 @@
 </nav>
 <div class="container" style="margin-top: 10px">
     <form action="">
-        <input type="hidden" id="articleId">
+        <input type="hidden" id="articleId" th:value="${id}">
         <div class="form-group">
             <label for="title">标题</label>
             <input type="text" class="form-control" id="title" placeholder="请输入标题">
@@ -104,7 +104,7 @@
 <script src="https://cdn.bootcss.com/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap-select/1.12.4/js/i18n/defaults-zh_CN.min.js"></script>
 
-<script type="text/javascript" src="../../static/wangEditor.min.js"></script>
+<script type="text/javascript" src="/wangEditor.min.js"></script>
 
 <script type="text/javascript">
     var E = window.wangEditor
@@ -120,7 +120,7 @@
 </footer>
 <script>
     $.ajax({
-        url:'/reception/findById',
+        url:'/reception/findArticle',
         type:'POST',
         data:{id:$("#articleId").val()},
         success:function (result) {
@@ -137,14 +137,15 @@
             url:'/reception/updateArticle',
             type:'POST',
             data:{
+                id:$("#articleId").val(),
                 title:$("#title").val(),
                 category:$("#option").val(),
                 introduction:$("#introduction").val(),
-                mainText:editor1.text.html()
+                mainText:editor1.txt.html()
             },
             success:function (result) {
                 if (result=='success'){
-                    window.location.href="url";
+                    window.location.href="/reception/index";
                 }
             }
         })

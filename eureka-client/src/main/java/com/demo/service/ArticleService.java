@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 public class ArticleService {
 
-    public static final int pageSize = 10;
+    public static final int pageSize = 5;
 
     public static final String sortProperties = "id";
 
@@ -38,6 +38,10 @@ public class ArticleService {
     }
 
     public Article updateArticle(Article article) {
+        article.setAuthor(articleRepository.findById(article.getId()).orElse(null).getAuthor());
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        article.setCreateTime(sdf.format(date));
         return articleRepository.save(article);
     }
 
